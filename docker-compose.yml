@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:15
     container_name: oficina_db
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -13,12 +13,18 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build: .
     container_name: oficina_api
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_USER: postgres
       DB_PASSWORD: postgres
@@ -27,7 +33,7 @@ services:
       DB_NAME: oficina
     ports:
       - "8000:8000"
-    restart: always
+    restart: unless-stopped
 
 volumes:
   postgres_data:
