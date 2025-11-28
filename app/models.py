@@ -10,7 +10,7 @@ class Carro(Base):
     modelo = Column(String, nullable=False)
     motor = Column(String, nullable=False)
     ano = Column(Integer, nullable=False)
-    placa = Column(String, nullable=False, unique=True)
+    placa = Column(String, nullable=False)
 
     servicos = relationship("Servico", back_populates="carro")
 
