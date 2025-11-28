@@ -31,11 +31,11 @@ E o [worker](/app/worker.py) que funciona como um consumidor das filas. Ele fica
 
 ## Testes
 
-2 testes simples, um que nao utiliza a api e um que utiliza(integracao)
+2 testes simples, um que nao utiliza a api e um que utiliza(integração)
 
 Teste Unitario : [Teste1](/app/Testes/testUnit.py)
 
-Teste de integração = [Teste2](/app/Testes/testInt.py)
+Teste de Integração = [Teste2](/app/Testes/testInt.py)
 
 
 ## Como rodar
@@ -43,7 +43,11 @@ Teste de integração = [Teste2](/app/Testes/testInt.py)
 Basta apenas subir o container com `docker compose up -d`
 
 Rabit Mq : http://localhost:15672 Usuario e senha : root 
+
 Api : http://localhost:8000
+
 Swagger : http://localhost:8000/docs
+
 Healthcheck: http://localhost:8000/health
+
 Testes: Rodar `pytest` no terminal que estiver rodando o container do docker
