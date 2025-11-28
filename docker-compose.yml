@@ -1,39 +1,50 @@
 version: "3.9"
 
 services:
-  db:
-    image: postgres:15
-    container_name: oficina_db
+  db:  # cria o banco de dados
+    image: postgres:15  # imagem
+    container_name: oficina_db # nome do container
     restart: unless-stopped
-    environment:
+    environment: # senha, usuiario e nome do bd
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: oficina
-    ports:
+    ports: # porta 5432 do container, exposta como 5433 
       - "5433:5432"
-    volumes:
+    volumes: # volume para manter os dados
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
+    healthcheck: # docker só marca o serviço como healthy quando o banco estiver aceitando conexões
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  api:
-    build: .
-    container_name: oficina_api
-    depends_on:
+  api: # cria a api 
+    build: . # constrói a imagem usando pasta atual
+    container_name: oficina_api 
+    depends_on: # so começa depois qu o bd estiver ok
       db:
         condition: service_healthy
-    environment:
+    environment: # configs para acessar o bd 
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: oficina
-    ports:
+    ports: # porta que esta expondo
       - "8000:8000"
     restart: unless-stopped
+
+  
+  rabbitmq: # uso da a imagem do RabbitMQ com painel de gerenciamento
+    image: rabbitmq:3-management
+    container_name: oficina_rabbit
+    ports:
+      - "5672:5672" # porta para comunicação com a API
+      - "15672:15672" # painel Web
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: root
 
 volumes:
   postgres_data:

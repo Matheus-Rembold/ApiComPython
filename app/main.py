@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from .database import Base, engine
 from .routers import carros, servicos
+from fastapi.exceptions import HTTPException
+from .exceptions import http_exception_handler, generic_exception_handler
+
 
 app = FastAPI()
 
@@ -10,6 +13,9 @@ def startup():
 
 app.include_router(carros.router)
 app.include_router(servicos.router)
+
+app.add_exception_handler(HTTPException, http_exception_handler)
+app.add_exception_handler(Exception, generic_exception_handler)
 
 @app.get("/health")
 def health():
