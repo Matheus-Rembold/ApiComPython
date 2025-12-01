@@ -10,6 +10,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 # roda como se fosse no terminal para instalar as dependencias
 
+ENV PYTHONPATH=/app:/app/app
+
 COPY ./app ./app
 # Copia a pasta app/ para dentro do container em /app/app
 

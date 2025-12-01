@@ -50,4 +50,4 @@ Swagger : http://localhost:8000/docs
 
 Healthcheck: http://localhost:8000/health
 
-Testes: Rodar `pytest` no terminal que estiver rodando o container do docker
+Testes: Rodar `docker exec -it oficina_api bash` no terminal, e depois rodar o codigo `pytest` no terminal que estiver rodando o container do docker
